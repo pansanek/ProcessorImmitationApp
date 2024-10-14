@@ -9,7 +9,6 @@ namespace ProcessorImmitationApp
     internal class Processor
     {
         private int[] reg = new int[8];  // 8 регистров общего назначения
-        private int ACC = 0;  // Аккумулятор для промежуточных вычислений
         private int pc = 0;  // Счетчик команд
 
         private const int LOAD = 1;
@@ -33,7 +32,7 @@ namespace ProcessorImmitationApp
                 Instruction instruction = memory.FetchInstruction(pc);  // Извлечение команды
                 running = DecodeAndExecute(instruction);  // Декодирование и выполнение
                 pc++;  // Переход к следующей команде
-                Console.WriteLine();  // Разделение между шагами
+                Console.WriteLine();
             }
         }
 
@@ -46,27 +45,19 @@ namespace ProcessorImmitationApp
             switch (op)
             {
                 case LOAD:
-                    ACC = memory.DataMemory[addr2];  // Загрузка данных из памяти в аккумулятор
-                    reg[addr1] = ACC;   // Загрузка данных из аккумулятора в регистр
-                    Console.WriteLine($"LOAD: Загрузить dmem[{addr2}] в reg[{addr1}], значение: {ACC}");
+                    reg[addr1] = memory.DataMemory[addr2];  // Загрузка данных из памяти в регистр
                     break;
                 case STORE:
-                    ACC = reg[addr2];   // Загрузка данных из регистра в аккумулятор
-                    memory.DataMemory[addr1] = ACC;  // Сохранение данных из аккумулятора в память
-                    Console.WriteLine($"STORE: Сохранить reg[{addr2}] в dmem[{addr1}], значение: {ACC}");
+                    memory.DataMemory[addr1] = reg[addr2];  // Сохранение данных из регистра в память
                     break;
                 case ADD:
-                    ACC = reg[addr1] + reg[addr2];  // Сложение данных в аккумуляторе
-                    reg[addr1] = ACC;   // Сохранение результата в регистр
-                    Console.WriteLine($"ADD: reg[{addr1}] = reg[{addr1}] + reg[{addr2}], результат: {ACC}");
+                    reg[addr1] = reg[addr1] + reg[addr2];  // Сложение данных двух регистров
                     break;
                 case SUB:
-                    ACC = reg[addr1] - reg[addr2];  // Вычитание данных в аккумуляторе
-                    reg[addr1] = ACC;   // Сохранение результата в регистр
-                    Console.WriteLine($"SUB: reg[{addr1}] = reg[{addr1}] - reg[{addr2}], результат: {ACC}");
+                    reg[addr1] = reg[addr1] - reg[addr2];  // Вычитание данных двух регистров
                     break;
                 case HALT:
-                    Console.WriteLine("HALT: Остановка программы");
+                    Console.WriteLine("Остановка программы");
                     return false;
                 default:
                     Console.WriteLine($"Неизвестная команда: {op}");
@@ -74,7 +65,7 @@ namespace ProcessorImmitationApp
             }
 
             // Вывод состояния после выполнения команды
-            Console.WriteLine($"PC: {pc}, Аккумулятор (ACC): {ACC}");
+            Console.WriteLine($"PC: {pc}");
             Console.WriteLine("Регистры: " + string.Join(", ", reg));
             Console.WriteLine("Память данных: " + string.Join(", ", memory.DataMemory));
 
