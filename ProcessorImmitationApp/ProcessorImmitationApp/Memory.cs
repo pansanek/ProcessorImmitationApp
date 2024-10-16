@@ -30,7 +30,7 @@ namespace ProcessorImmitationApp
         public Instruction FetchInstruction(int pc)
         {
             Instruction instruction = CommandMemory[pc];
-            Console.WriteLine($"Извлечена команда (IR): {instruction}");
+            Console.WriteLine($"Извлечена команда: {instruction}");
             return instruction;
         }
     }
