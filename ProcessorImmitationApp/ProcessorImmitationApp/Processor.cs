@@ -11,10 +11,12 @@ namespace ProcessorImmitationApp
         private int[] reg = new int[8];  // 8 регистров общего назначения
         private int pc = 0;  // Счетчик команд (Program Counter)
 
-        private const uint LOAD = 0;
-        private const uint STORE = 1;
-        private const uint ADD = 2;
-        private const uint HALT = 3;
+        private const uint LOAD = 0;     // 000
+        private const uint STORE = 1;    // 001
+        private const uint ADD = 2;      // 010
+        private const uint JUMP_IF = 3;  // 011
+        private const uint JUMP = 4;     // 100
+        private const uint HALT = 5;     // 101
 
         private Memory memory;
 
@@ -55,6 +57,17 @@ namespace ProcessorImmitationApp
                 case HALT:
                     Console.WriteLine("Остановка программы");
                     return false;
+                case JUMP:
+                    pc = (int)op1;  // Переход к указанному адресу
+                    break;
+                case JUMP_IF:
+                    // Условный прыжок: если op1 == op2, перейти на адрес в op1
+                    if (reg[op1] == reg[op2])
+                    {
+                        pc = (int)op1;
+                        return true;  // Обновлённый PC
+                    }
+                    break;
                 default:
                     Console.WriteLine($"Неизвестная команда: {cmdType}");
                     break;
