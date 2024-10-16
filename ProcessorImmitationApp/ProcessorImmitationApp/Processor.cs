@@ -9,13 +9,12 @@ namespace ProcessorImmitationApp
     internal class Processor
     {
         private int[] reg = new int[8];  // 8 регистров общего назначения
-        private int pc = 0;  // Счетчик команд
+        private int pc = 0;  // Счетчик команд (Program Counter)
 
-        private const int LOAD = 1;
-        private const int STORE = 2;
-        private const int ADD = 3;
-        private const int SUB = 4;
-        private const int HALT = 99;
+        private const uint LOAD = 0;
+        private const uint STORE = 1;
+        private const uint ADD = 2;
+        private const uint HALT = 3;
 
         private Memory memory;
 
@@ -30,7 +29,7 @@ namespace ProcessorImmitationApp
             while (running)
             {
                 Instruction instruction = memory.FetchInstruction(pc);  // Извлечение команды
-                running = DecodeAndExecute(instruction);  // Декодирование и выполнение
+                running = DecodeAndExecute(instruction);  // Декодирование и выполнение команды
                 pc++;  // Переход к следующей команде
                 Console.WriteLine();
             }
@@ -38,33 +37,30 @@ namespace ProcessorImmitationApp
 
         private bool DecodeAndExecute(Instruction instruction)
         {
-            int op = instruction.OpCode;
-            int addr1 = instruction.Operand1;
-            int addr2 = instruction.Operand2;
-
-            switch (op)
+            uint cmdType = instruction.CmdType;
+            uint op1 = instruction.Operand1;
+            uint op2 = instruction.Operand2;
+            
+            switch (cmdType)
             {
                 case LOAD:
-                    reg[addr1] = memory.DataMemory[addr2];  // Загрузка данных из памяти в регистр
+                    reg[op1] = memory.DataMemory[op2];  // Загрузка данных из памяти в регистр
                     break;
                 case STORE:
-                    memory.DataMemory[addr1] = reg[addr2];  // Сохранение данных из регистра в память
+                    memory.DataMemory[op1] = reg[op2];  // Сохранение данных из регистра в память
                     break;
                 case ADD:
-                    reg[addr1] = reg[addr1] + reg[addr2];  // Сложение данных двух регистров
-                    break;
-                case SUB:
-                    reg[addr1] = reg[addr1] - reg[addr2];  // Вычитание данных двух регистров
+                    reg[op1] = reg[op1] + reg[op2];  // Сложение данных двух регистров
                     break;
                 case HALT:
                     Console.WriteLine("Остановка программы");
                     return false;
                 default:
-                    Console.WriteLine($"Неизвестная команда: {op}");
+                    Console.WriteLine($"Неизвестная команда: {cmdType}");
                     break;
             }
 
-            // Вывод состояния после выполнения команды
+            // Вывод текущего состояния процессора
             Console.WriteLine($"PC: {pc}");
             Console.WriteLine("Регистры: " + string.Join(", ", reg));
             Console.WriteLine("Память данных: " + string.Join(", ", memory.DataMemory));

@@ -18,36 +18,35 @@ namespace ProcessorImmitationApp
             int[] initialData = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };  // Последняя ячейка для суммы
             memory.LoadData(initialData);
 
-            // Программа для суммирования всех элементов массива
-            List<Instruction> program = new List<Instruction>
+            List<uint> program = new List<uint>
             {
-            new Instruction(1, 0, 0),  // Загрузить значение dmem[0] в R0 
-            new Instruction(1, 1, 1),  // Загрузить значение dmem[1] в R1 
-            new Instruction(3, 0, 1),  // Сложить R0 и R1, результат в R0 
+                0b00_0000_0000,  // LOAD R0, dmem[0] -> Загрузить значение dmem[0] в R0
+                0b00_0001_0001,  // LOAD R1, dmem[1] -> Загрузить значение dmem[1] в R1
+                0b10_0000_0001,  // ADD R0, R1 -> Сложить R0 и R1, результат в R0
 
-            new Instruction(1, 1, 2),  // Загрузить значение dmem[2] в R1 
-            new Instruction(3, 0, 1),  // Сложить R0 и R1, результат в R0 
+                0b00_0001_0010,  // LOAD R1, dmem[2] -> Загрузить значение dmem[2] в R1
+                0b10_0000_0001,  // ADD R0, R1 -> Сложить R0 и R1, результат в R0
 
-            new Instruction(1, 1, 3),  // Загрузить значение dmem[3] в R1 
-            new Instruction(3, 0, 1),  // Сложить R0 и R1, результат в R0 
+                0b00_0001_0011,  // LOAD R1, dmem[3] -> Загрузить значение dmem[3] в R1
+                0b10_0000_0001,  // ADD R0, R1 -> Сложить R0 и R1, результат в R0
 
-            new Instruction(1, 1, 4),  // Загрузить значение dmem[4] в R1 
-            new Instruction(3, 0, 1),  // Сложить R0 и R1, результат в R0 
+                0b00_0001_0100,  // LOAD R1, dmem[4] -> Загрузить значение dmem[4] в R1
+                0b10_0000_0001,  // ADD R0, R1 -> Сложить R0 и R1, результат в R0
 
-            new Instruction(1, 1, 5),  // Загрузить значение dmem[5] в R1 
-            new Instruction(3, 0, 1),  // Сложить R0 и R1, результат в R0 
+                0b00_0001_0101,  // LOAD R1, dmem[5] -> Загрузить значение dmem[5] в R1
+                0b10_0000_0001,  // ADD R0, R1 -> Сложить R0 и R1, результат в R0
 
-            new Instruction(1, 1, 6),  // Загрузить значение dmem[6] в R1 
-            new Instruction(3, 0, 1),  // Сложить R0 и R1, результат в R0 
+                0b00_0001_0110,  // LOAD R1, dmem[6] -> Загрузить значение dmem[6] в R1
+                0b10_0000_0001,  // ADD R0, R1 -> Сложить R0 и R1, результат в R0
 
-            new Instruction(1, 1, 7),  // Загрузить значение dmem[7] в R1 
-            new Instruction(3, 0, 1),  // Сложить R0 и R1, результат в R0 
+                0b00_0001_0111,  // LOAD R1, dmem[7] -> Загрузить значение dmem[7] в R1
+                0b10_0000_0001,  // ADD R0, R1 -> Сложить R0 и R1, результат в R0
 
-            new Instruction(1, 1, 8),  // Загрузить значение dmem[8] в R1 
-            new Instruction(3, 0, 1),  // Сложить R0 и R1, результат в R0 
+                0b00_0001_1000,  // LOAD R1, dmem[8] -> Загрузить значение dmem[8] в R1
+                0b10_0000_0001,  // ADD R0, R1 -> Сложить R0 и R1, результат в R0
 
-            new Instruction(2, 9, 0),  // Сохранить значение R0 (сумма) в dmem[9] 
-            new Instruction(99, 0, 0)  // Остановить выполнение программы
+                0b01_1001_0000,  // STORE R0, dmem[9] -> Сохранить значение R0 (сумма) в dmem[9]
+                0b11_0000_0000   // HALT -> Остановить выполнение программы
             };
             memory.LoadProgram(program);
 
