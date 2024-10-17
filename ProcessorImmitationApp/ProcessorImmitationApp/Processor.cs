@@ -17,6 +17,8 @@ namespace ProcessorImmitationApp
         private const uint JUMP_IF = 3;  // 011
         private const uint JUMP = 4;     // 100
         private const uint HALT = 5;     // 101
+        private const uint LOAD_SIZE = 6;// 110
+        private const uint INC = 7;// 111
 
         private Memory memory;
 
@@ -46,10 +48,12 @@ namespace ProcessorImmitationApp
             switch (cmdType)
             {
                 case LOAD:
-                    reg[op1] = memory.DataMemory[op2];  // Загрузка данных из памяти в регистр
+                    reg[op1] = memory.DataMemory[(int)reg[2]];  // Загрузка данных из памяти в регистр
+                    Console.WriteLine($"Загрузка в {reg[op1]} значение {memory.DataMemory[(int)reg[2]]}");
                     break;
                 case STORE:
-                    memory.DataMemory[op1] = reg[op2];  // Сохранение данных из регистра в память
+                    Console.WriteLine($"Значение из R{op2} ({reg[op2]}) записано в последний элемент памяти.");
+                    memory.DataMemory[memory.DataMemory.Length - 1] = reg[op2];  // Сохранение данных из регистра в память
                     break;
                 case ADD:
                     reg[op1] = reg[op1] + reg[op2];  // Сложение данных двух регистров
@@ -58,14 +62,44 @@ namespace ProcessorImmitationApp
                     Console.WriteLine("Остановка программы");
                     return false;
                 case JUMP:
+                    Console.WriteLine($"Переход");
                     pc = (int)op1;  // Переход к указанному адресу
                     break;
                 case JUMP_IF:
-                    // Условный прыжок: если op1 == op2, перейти на адрес в op1
-                    if (reg[op1] == reg[op2])
+                    if (op1 < reg.Length)
                     {
-                        pc = (int)op1;
-                        return true;  // Обновлённый PC
+                        // Условный прыжок: если R2 == R3, перейти к завершению
+                        if (reg[op1] == reg[3])
+                        {
+                            pc = (int)instruction.Operand2;  // Переход к метке завершения
+                            return true;  // Не увеличивать PC, т.к. прыжок
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: Индекс выходит за пределы при JUMP_IF.");
+                    }
+                    break;
+                case INC:
+                    if (op1 < reg.Length)
+                    {
+                        reg[op1] += 1;  // Увеличение значения регистра на 1
+                        Console.WriteLine($"Увеличен регистр R{op1} до {reg[op1]}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: Индекс выходит за пределы при INC.");
+                    }
+                    break;
+                case LOAD_SIZE:
+                    if (op1 < reg.Length)
+                    {
+                        reg[op1] = (int)(uint)memory.DataMemory.Length-1;  // Автоматически загружаем размер массива в регистр
+                        Console.WriteLine($"Загружен размер массива: {reg[op1]} в R{op1}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: Индекс выходит за пределы регистров при LOAD_SIZE.");
                     }
                     break;
                 default:
