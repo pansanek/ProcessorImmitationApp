@@ -19,6 +19,8 @@ namespace ProcessorImmitationApp
 
         public void LoadData(int[] initialData)
         {
+            
+         
             Array.Copy(initialData, DataMemory, initialData.Length);
         }
 
@@ -35,4 +37,7 @@ namespace ProcessorImmitationApp
             return instruction;
         }
     }
+
+
+  
 }

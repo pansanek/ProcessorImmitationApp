@@ -8,7 +8,7 @@ namespace ProcessorImmitationApp
 {
     internal class Processor
     {
-        private int[] reg = new int[8];  // 8 регистров общего назначения
+        private int[] reg = new int[4];  // 4 регистров общего назначения
         private int pc = 0;  // Счетчик команд (Program Counter)
 
         private const uint LOAD = 0;     // 000
@@ -53,7 +53,7 @@ namespace ProcessorImmitationApp
                     break;
                 case STORE:
                     Console.WriteLine($"Значение из R{op2} ({reg[op2]}) записано в последний элемент памяти.");
-                    memory.DataMemory[memory.DataMemory.Length - 1] = reg[op2];  // Сохранение данных из регистра в память
+                    memory.DataMemory[memory.DataMemory[0]+1] = reg[op2];  // Сохранение данных из регистра в память
                     break;
                 case ADD:
                     reg[op1] = reg[op1] + reg[op2];  // Сложение данных двух регистров
@@ -94,7 +94,7 @@ namespace ProcessorImmitationApp
                 case LOAD_SIZE:
                     if (op1 < reg.Length)
                     {
-                        reg[op1] = (int)(uint)memory.DataMemory.Length-1;  // Автоматически загружаем размер массива в регистр
+                        reg[op1] = memory.DataMemory[0]+1;  // Автоматически загружаем размер массива в регистр
                         Console.WriteLine($"Загружен размер массива: {reg[op1]} в R{op1}");
                     }
                     else

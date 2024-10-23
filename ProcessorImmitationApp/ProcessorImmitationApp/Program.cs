@@ -10,18 +10,17 @@ namespace ProcessorImmitationApp
     {
         static void Main(string[] args)
         {
-
             // Создание памяти
-            Memory memory = new Memory(10);
+            Memory memory = new Memory(20);
 
-            // Инициализация данных в памяти (массив может быть любого размера)
-            int[] initialData = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };  // Массив для суммирования
+            // Инициализация данных в памяти 
+            int[] initialData = { 15, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,10,10, 10, 10, 10 };  
+            
             memory.LoadData(initialData);
 
-            // Пример 11-битных команд
             List<uint> program = new List<uint>
             {
-                0b000_0000_0000u,  // LOAD R0, dmem[0]    (Загрузить первый элемент в R0)
+                0b000_0001_0000u,  // LOAD R0, dmem[1]    (Загрузить первый элемент в R0)
                 0b111_0010_0000u,  // INC R2              (Инициализировать счётчик позиций R2 на 1)
                 0b110_0011_0000u,  // LOAD_SIZE R3        (Загрузить размер массива в R3)
     
@@ -44,8 +43,6 @@ namespace ProcessorImmitationApp
             Processor processor = new Processor(memory);
             processor.ExecuteProgram();
             Console.ReadLine();
-            // Ожидаемый результат:
-            // Значение dmem[9] = 9 (сумма всех элементов массива dmem[0] - dmem[8])
         }
     }
 }
