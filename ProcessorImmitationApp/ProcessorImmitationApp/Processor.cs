@@ -66,6 +66,7 @@ namespace ProcessorImmitationApp
                     pc = (int)op1;  // Переход к указанному адресу
                     break;
                 case JUMP_IF:
+                    Console.WriteLine($"Проверка условия совпадения {reg[op1]} и {reg[3]}");
                     if (op1 < reg.Length)
                     {
                         // Условный прыжок: если R2 == R3, перейти к завершению
