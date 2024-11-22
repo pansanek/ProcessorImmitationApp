@@ -56,6 +56,7 @@ namespace ProcessorImmitationApp
                     memory.DataMemory[memory.DataMemory[0]+1] = reg[op2];  // Сохранение данных из регистра в память
                     break;
                 case ADD:
+                    Console.WriteLine($"R{op2}({reg[op2]}) + R{op1}({reg[op1]}).");
                     reg[op1] = reg[op1] + reg[op2];  // Сложение данных двух регистров
                     break;
                 case HALT:

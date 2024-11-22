@@ -12,7 +12,7 @@ namespace ProcessorImmitationApp
         static void Main(string[] args)
         {
             // Создание памяти
-            string[] programText = File.ReadAllLines("D:\\VSREPOS\\ProcessorImmitationApp\\ProcessorImmitationApp\\ProcessorImmitationApp\\program.txt");
+            string[] programText = File.ReadAllLines("C:\\Users\\alexp\\Source\\Repos\\pansanek\\ProcessorImmitationApp\\ProcessorImmitationApp\\ProcessorImmitationApp\\program.txt");
 
             // Создание ассемблера
             Assembler assembler = new Assembler();
@@ -20,7 +20,7 @@ namespace ProcessorImmitationApp
             // Преобразование текста в машинный код
             List<uint> machineCode = assembler.Assemble(programText);
 
-            Memory memory = new Memory(11); // Например, память для данных
+            Memory memory = new Memory(11); 
 
             // Инициализация данных в памяти 
             int[] initialData = { 9, 1, 2, 3, 4, 5, 6, 7, 8, 9};  
