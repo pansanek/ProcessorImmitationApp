@@ -56,7 +56,7 @@ namespace ProcessorImmitationApp
                     memory.DataMemory[memory.DataMemory[0]+1] = reg[op2];  // Сохранение данных из регистра в память
                     break;
                 case ADD:
-                    Console.WriteLine($"R{op2}({reg[op2]}) + R{op1}({reg[op1]}).");
+                    Console.WriteLine($"Сложение R{op2}({reg[op2]}) + R{op1}({reg[op1]}).");
                     reg[op1] = reg[op1] + reg[op2];  // Сложение данных двух регистров
                     break;
                 case HALT:
@@ -64,23 +64,19 @@ namespace ProcessorImmitationApp
                     return false;
                 case JUMP:
                     Console.WriteLine($"Переход");
-                    pc = (int)op1;  // Переход к указанному адресу
+                    pc = (int)op1-1;  // Переход к указанному адресу
                     break;
                 case JUMP_IF:
-                    Console.WriteLine($"Проверка условия совпадения {reg[op1]} и {reg[3]}");
-                    if (op1 < reg.Length)
-                    {
+                    Console.WriteLine($"Проверка условия совпадения {reg[2]} и {reg[3]}");
+                    
                         // Условный прыжок: если R2 == R3, перейти к завершению
-                        if (reg[op1] == reg[3])
+                        if (reg[2] == reg[3])
                         {
-                            pc = (int)instruction.Operand2;  // Переход к метке завершения
+                            pc = (int)instruction.Operand1-1;  // Переход к метке завершения
                             return true;  // Не увеличивать PC, т.к. прыжок
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка: Индекс выходит за пределы при JUMP_IF.");
-                    }
+                    
+              
                     break;
                 case INC:
                     if (op1 < reg.Length)

@@ -42,7 +42,7 @@ namespace ProcessorImmitationApp
 
                 uint operand1 = parts.Length > 1 ? ParseOperand(parts[1], commandIndex, 0) : 0;
                 uint operand2 = parts.Length > 2 ? ParseOperand(parts[2], commandIndex, 1) : 0;
-                Console.WriteLine($"Генерируем  команду из cmdType={cmdType}, operand1={operand1},operand2={operand2}");
+                Console.WriteLine($"Генерируем  команду из cmdType={cmdType}, operand1={operand1},operand2={operand2}, commandIndex={commandIndex}");
                 uint binaryInstruction = GenerateInstruction(cmdType, operand1, operand2);
                 machineCode.Add(binaryInstruction);
                 commandIndex++;
